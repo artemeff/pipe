@@ -1,0 +1,44 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1"/>
+<title>true/Elixir.Hub.html</title>
+</head><body style='background-color: white; color: black'>
+<pre>
+File generated from /Users/artemeff/Work/elixir/pipe/lib/pipe/hub.ex by COVER 2013-07-14 at 08:58:00
+
+****************************************************************************
+
+        |  defmodule Hub do
+        |    @moduledoc """
+        |    Module for spawning and storing
+        |    processes for each user
+        |    """
+        |  
+        |    @doc """
+        |    Get user by id
+        |    """
+        |    def get(user) when is_atom(user), do: true
+        |  
+        |    @doc """
+        |    Adds user to the list
+        |    """
+        |    def add(user) when is_atom(user), do: true
+        |    def add(user, session) when is_atom(user) and is_binary(session), do: true
+        |    def add(user, session, pid) when is_atom(user) and is_binary(session) and is_pid(pid), do: true
+        |  
+        |    @doc """
+        |    Update user
+        |    """
+        |    def update(user, session) when is_atom(user) and is_binary(session), do: true
+        |    def update(user, pid) when is_atom(user) and is_pid(pid), do: true
+        |  
+        |    @doc """
+        |    Delete user
+        |    """
+        |    def delete(user) when is_atom(user), do: true
+        |  
+        |  end
+</pre>
+</body>
+</html>
