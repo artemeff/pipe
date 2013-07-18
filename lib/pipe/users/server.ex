@@ -1,9 +1,4 @@
 defmodule Pipe.Users.Server do
-  @moduledoc """
-  High-level bindings for users in Redis storage
-  Uses OTP conviction
-  """
-
   use Exredis
   use GenServer.Behaviour
 
