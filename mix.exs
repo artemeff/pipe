@@ -10,7 +10,7 @@ defmodule Pipe.Mixfile do
   # Configuration for the OTP application
   def application do
     [
-      applications: [:ranch, :crypto, :cowboy],
+      applications: [:kernel, :stdlib, :cowboy],
       registered: [:application],
       mod: { Pipe.Application, [] }
     ]

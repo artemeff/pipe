@@ -9,8 +9,8 @@ defmodule Pipe.Application do
     # cowboy router
     dispatch = :cowboy_router.compile [
       {:_, [
-        {'/ws',    :bullet_handler, [:handler, Pipe.Ws.Handler]},
-        {'/[...]', :cowboy_static, [
+        {'/ws', :bullet_handler, [:handler, Pipe.Ws.Handler]},
+        {'/static/[...]', :cowboy_static, [
           {:directory, {:priv_dir, :bullet, []}},
           {:mimetypes, [
             {".js", ["application/javascript"]}
@@ -20,7 +20,7 @@ defmodule Pipe.Application do
     ]
 
     # start cowboy handler
-    :cowboy.start_http :ws, 100,
+    :cowboy.start_http :http, 100,
       [{:port, 8080}],
       [{:env, [{:dispatch, dispatch}]}]
 
