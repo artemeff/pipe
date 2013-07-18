@@ -73,13 +73,15 @@ defmodule Pipe.Users.Server do
     redis |> query(["GET", "online:#{id}"]) |> any_to_boolean
 
   defp online(redis, id, state) when is_pid(redis) and is_integer(id) and is_boolean(state), do:
-    redis |> query(["SET", "online:#{id}", state])
+    redis |> query(["SET", "online:#{id}", (state |> boolean_to_integer)])
 
   defp any_to_pid(value) when is_binary(value), do:
     "<#{value}>" |> binary_to_list |> list_to_pid
 
-  defp any_to_boolean(value) when is_binary(value), do: value == "true"
+  defp boolean_to_integer(true),  do: 1
+  defp boolean_to_integer(false), do: 0
 
   defp any_to_boolean(:undefined), do: false
+  defp any_to_boolean(value), do: value != "0"
 
 end
