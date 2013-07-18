@@ -9,8 +9,13 @@ defmodule Pipe.Application do
     # cowboy router
     dispatch = :cowboy_router.compile [
       {:_, [
-        {'/ws', Pipe.Ws.WsHandler, []},
-        {'/', Pipe.Ws.ClientHandler, []}
+        {'/ws',    :bullet_handler, [:handler, Pipe.Ws.Handler]},
+        {'/[...]', :cowboy_static, [
+          {:directory, {:priv_dir, :bullet, []}},
+          {:mimetypes, [
+            {".js", ["application/javascript"]}
+          ]}
+        ]}
       ]}
     ]
 
