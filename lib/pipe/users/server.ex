@@ -45,10 +45,6 @@ defmodule Pipe.Users.Server do
   def handle_call({:online, id, state}, _from, redis), do:
     { :reply, online(redis, id, state), redis }
 
-  # def handle_cast({ :push, new }, redis) do
-  #   { :noreply, [new|redis] }
-  # end
-
   ##
   # Helper methods for getting data from Redis storage
   ##
