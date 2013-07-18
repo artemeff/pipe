@@ -10,8 +10,9 @@ defmodule Pipe.Mixfile do
   # Configuration for the OTP application
   def application do
     [
-      registered: [:main],
-      mod: { Pipe.Main, [] }
+      applications: [:cowboy],
+      registered: [:application],
+      mod: { Pipe.Application, [] }
     ]
   end
 
@@ -20,7 +21,7 @@ defmodule Pipe.Mixfile do
     [
       { :exredis, "0.0.2", [ github: "artemeff/exredis", tag: "v0.0.2" ] },
       { :json,    "0.0.1", [ github: "artemeff/json", branch: "upgrade-version" ] },
-      { :socket,  "0.1.2", [ github: "meh/elixir-socket" ] }
+      { :bullet,  "0.4.1", [ github: "extend/bullet", ref: "45888" ] }
     ]
   end
 
