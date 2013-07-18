@@ -24,6 +24,8 @@ defmodule Pipe.Application do
       [{:port, 8080}],
       [{:env, [{:dispatch, dispatch}]}]
 
+    IO.puts " -- http/ws start on http://0.0.0.0:8080"
+
     # start other applications
     Pipe.Hub.Supervisor.start_link
     Pipe.Users.Supervisor.start_link
