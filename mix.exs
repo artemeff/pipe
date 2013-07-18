@@ -9,8 +9,10 @@ defmodule Pipe.Mixfile do
 
   # Configuration for the OTP application
   def application do
-    [ registered: [:users],
-      mod: { Pipe.Users, [] } ]
+    [
+      registered: [:main],
+      mod: { Pipe.Main, [] }
+    ]
   end
 
   # Returns the list of dependencies
