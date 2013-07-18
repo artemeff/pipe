@@ -18,12 +18,20 @@ defmodule Pipe.Users.Server do
     { :ok, redis }
 
   @doc """
-  Get user PID by user session
+  Get user PID by user id
 
-  :gen_server.call(:users, {:pid, "session"})
+  :gen_server.call(:users, {:pid, 123})
   """
-  def handle_call({:pid, session}, _from, redis), do:
-    { :reply, pid(redis, session), redis }
+  def handle_call({:pid, user_id}, _from, redis), do:
+    { :reply, pid(redis, user_id), redis }
+
+  @doc """
+  Get all users sessions by his id
+  
+  :gen_server.call(:users, {:session, "session_id"})
+  """
+  def handle_call({:session, session_id}, _from, redis), do:
+    { :reply, session(redis, session_id), redis }
 
   @doc """
   Get all users sessions by his id
@@ -46,33 +54,41 @@ defmodule Pipe.Users.Server do
     { :reply, online(redis, id, state), redis }
 
   ##
-  # Helper methods for getting data from Redis storage
+  # Main methods for getting data from Redis storage
   ##
 
-  defp pid(redis, session) when is_pid(redis) and is_binary(session) do
-    id = redis |> query(["GET", "pids:#{session}"])
+  # get PID by user id
+  defp pid(redis, user_id) when is_pid(redis) and is_integer(user_id), do:
+    redis |> query(["GET", "pids:#{user_id}"]) |> prepare_pid
 
-    unless id == :undefined do
-      pid = any_to_pid id
-    else
-      # spawn fuckin' process for user
-      pid = nil
-    end
+  # gets false or user id by session id
+  defp session(redis, session_id) when is_pid(redis) and is_binary(session_id), do:
+    redis |> query(["GET", "session:#{session_id}"]) |> prepare_auth
 
-    pid
-  end
-
+  # get all sessions by user id
   defp sessions(redis, id) when is_pid(redis) and is_integer(id), do:
     redis |> query(["SMEMBERS", "sessions:#{id}"])
 
+  # get true if user is online or false
   defp online(redis, id) when is_pid(redis) and is_integer(id), do:
     redis |> query(["GET", "online:#{id}"]) |> any_to_boolean
 
+  # set user online state by his id
   defp online(redis, id, state) when is_pid(redis) and is_integer(id) and is_boolean(state), do:
     redis |> query(["SET", "online:#{id}", (state |> boolean_to_integer)])
 
+  ##
+  # Helpers
+  ##
+
+  defp prepare_pid(:undefined), do: "start"
+  defp prepare_pid(value), do: value |> any_to_pid
+
+  defp prepare_auth(:undefined), do: false
+  defp prepare_auth(value) when is_binary(value), do: value |> binary_to_integer
+
   defp any_to_pid(value) when is_binary(value), do:
-    "<#{value}>" |> binary_to_list |> list_to_pid
+    "#{value}" |> binary_to_list |> list_to_pid
 
   defp boolean_to_integer(true),  do: 1
   defp boolean_to_integer(false), do: 0
