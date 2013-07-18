@@ -26,7 +26,7 @@ defmodule Pipe.Users.Server do
     { :reply, pid(redis, user_id), redis }
 
   @doc """
-  Get all users sessions by his id
+  Get user_id by session, for auth
   
   :gen_server.call(:users, {:session, "session_id"})
   """
@@ -42,7 +42,7 @@ defmodule Pipe.Users.Server do
     { :reply, sessions(redis, id), redis }
 
   @doc """
-  Get all users sessions by his id
+  Get online state by user_id
   
   :gen_server.call(:users, {:online, 123})
   :gen_server.call(:users, {:online, 123, state})
