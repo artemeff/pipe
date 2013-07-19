@@ -32,3 +32,22 @@ __Users__
 # set user online state by user_id
 :gen_server.call :users, {:online, 123, state}
 ```
+
+__WebSockets__
+
+By default it attaching to `http://0.0.0.0:8080` and anyone allow to get this page.
+
+__Internal API__
+
+By default API server attaching to `http://127.0.0.1:8080` and only local machines can use it.
+
+```http
+GET /
+
+  Hello World!
+
+GET /version
+
+  0.1-beta
+
+```
