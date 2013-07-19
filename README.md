@@ -35,9 +35,13 @@ __Users__
 
 __WebSockets__
 
+`http://0.0.0.0:8080`
+
 By default it attaching to `http://0.0.0.0:8080` and anyone allow to get this page.
 
 __Internal API__
+
+`http://127.0.0.1:8080`
 
 By default API server attaching to `http://127.0.0.1:8080` and only local machines can use it.
 
