@@ -1,4 +1,3 @@
 #!/bin/sh
 
-mix deps.get
-mix run --no-halt
+mix do deps.get, run --no-halt
