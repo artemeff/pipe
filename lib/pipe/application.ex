@@ -8,10 +8,19 @@ defmodule Pipe.Application do
   def start(_type, _args) do
     # cowboy router
     dispatch = :cowboy_router.compile [
+      # API for other apps
+      # visible only local
+      {"localhost", [
+        {'/', Pipe.Api.Handler, []},
+      ]},
+
+      # WS handler and client.js, for users
+      # visible for global
       {:_, [
-        {'/ws', :bullet_handler, [:handler, Pipe.Ws.Handler]},
+        {'/', Pipe.Ws.Main, []},
+        {'/ws', :bullet_handler, [{:handler, Pipe.Ws.Handler}]},
         {'/static/[...]', :cowboy_static, [
-          {:directory, {:priv_dir, :bullet, []}},
+          {:directory, {:priv_dir, :pipe, []}},
           {:mimetypes, [
             {".js", ["application/javascript"]}
           ]}
@@ -24,7 +33,8 @@ defmodule Pipe.Application do
       [{:port, 8080}],
       [{:env, [{:dispatch, dispatch}]}]
 
-    IO.puts " -- http/ws start on http://0.0.0.0:8080"
+    IO.puts " -- [http] start on http://127.0.0.1:8080"
+    IO.puts " -- [ws]   start on http://0.0.0.0:8080"
 
     # start other applications
     Pipe.Hub.Supervisor.start_link

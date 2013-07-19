@@ -11,7 +11,7 @@ defmodule Pipe.Mixfile do
   def application do
     [
       applications: [:kernel, :stdlib, :cowboy],
-      registered: [:application],
+      registered: [],
       mod: { Pipe.Application, [] }
     ]
   end

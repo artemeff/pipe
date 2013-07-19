@@ -2,56 +2,41 @@ defmodule Pipe.Ws.Handler do
 
   @period 1000
 
-  def init(_transport, req, _opts, _active) do
-    IO.puts " -- from init:"
-    #IO.inspect transport
-    IO.inspect req
-    #IO.inspect opts
-    #IO.inspect active
-    IO.puts " --"
+  def init(_transport, request, _options, _active) do
+    IO.puts " -- [ws]   ws init"
 
-    { :ok, req, 'test' }
+    { :ok, request, :test }
   end
 
-  def stream(data, req, state) do
-    IO.puts "ping #{data} received"
   
-    { :reply, "pong", req, state }
-  end
-
-  #def stream(data, req, state) do
-  #  IO.puts " -- from stream:"
-  #  IO.inspect data
-  #  IO.inspect req
-  #  IO.inspect state
-  #  IO.puts " --"
-#
-  #  { :ok, req, state }
+  #def stream(data, request, state) do
+  #  IO.puts " -- [ws]   stream ok: '#{data}'"
+  #
+  #  { :ok, request, state }
   #end
 
-  def info(:refresh, req, _) do
-    time_ref = :erlang.send_after @period, self(), :refresh
-    date_time = :cowboy_clock.rfc1123
-    IO.puts "clock refresh timeout: #{date_time}"
-  
-    { :reply, date_time, req, time_ref }
+  def stream(data, request, state) do
+    IO.puts " -- [ws]   stream re: '#{data}'"
+
+    { :reply, "stream: #{data};#{state}", request, state }
   end
 
-  def info(info, req, state) do
-    IO.puts " -- from info:"
-    IO.inspect info
-    IO.inspect req
-    IO.inspect state
-    IO.puts " --"
 
-    { :ok, req, state }
+  #def info(message, request, state) do 
+  #  IO.puts " -- [ws]   info ok: '#{message}'"
+  #
+  #  { :ok, request, state }
+  #end
+
+  def info(message, request, state) do 
+    IO.puts " -- [ws]   info re: '#{message}'"
+
+    { :reply, "message: #{message};#{state}", request, state }
   end
 
-  def terminate(_request, _any) do
-    #IO.puts " -- from terminate:"
-    #IO.inspect req
-    #IO.inspect time_ref
-    #IO.puts " --"
+
+  def terminate(_request, _state) do
+    IO.puts " -- [ws]   terminate"
 
     :ok
   end
