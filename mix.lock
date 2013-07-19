@@ -3,6 +3,7 @@
   "cowboy": {:git, "git://github.com/extend/cowboy.git", "46b2ea0aaa7fe891bfdf3f8a0c47357393e72cf6", [{:tag, "0.8.4"}]},
   "eredis": {:git, "git://github.com/wooga/eredis.git", "313fce73b0fdb53f3a5f146a7adf19677b417cb5", [{:tag, "v1.0.6"}]},
   "exredis": {:git, "git://github.com/artemeff/exredis.git", "538c153cbef45672e47140a89ac5937c65b7d6e7", [{:tag, "v0.0.2"}]},
+  "gproc": {:git, "git://github.com/uwiger/gproc.git", "9cc44eeb5cfeeb381b452960b0447203f0bfcb1a", [{:tag, "0.2.17"}]},
   "json": {:git, "git://github.com/artemeff/json.git", "29171312bfc52f133a7d71f8ea0033a3b4c6de93", [{:branch, "upgrade-version"}]},
   "jsx": {:git, "git://github.com/talentdeficit/jsx.git", "e9cdeda7c85f09722064185c23e3f84e7eca4351", [{:ref, "e9cde"}]},
   "meck": {:git, "git://github.com/eproxus/meck.git", "161e240166a0d20e9ffa2be5d0bfa6a981f12aef", []},
