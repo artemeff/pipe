@@ -13,6 +13,24 @@ defmodule Pipe.Users.Server do
     { :ok, redis }
 
   @doc """
+  
+  """
+  def handle_cast({:notify, user_id, message}, _from, redis), do:
+    { :reply, notify(user_id, message), redis }
+
+  @doc """
+  
+  """
+  def handle_call({:subscribe, user_id}, _from, redis), do:
+    { :reply, subscribe(user_id), redis }
+
+  @doc """
+
+  """
+  def handle_call({:unsubscribe, user_id}, _from, redis), do:
+    { :reply, unsubscribe(user_id), redis }
+
+  @doc """
   Get user PID by user id
 
   :gen_server.call(:users, {:pid, 123})
@@ -51,6 +69,18 @@ defmodule Pipe.Users.Server do
   ##
   # Main methods for getting data from Redis storage
   ##
+
+  # subscribe user
+  defp subscribe(user_id) when is_integer(user_id), do:
+    :gproc.reg({ :p, :l, { :users_hub, user_id }})
+
+  # unsubscribe user
+  defp unsubscribe(user_id) when is_integer(user_id), do:
+    :gproc.unreg({ :p, :l, { :users_hub, user_id }})
+
+  # notify user
+  defp notify(user_id, message) when is_integer(user_id) and is_binary(message), do:
+    :gproc.send({ :p, :l, user_id}, message)
 
   # get PID by user id
   defp pid(redis, user_id) when is_pid(redis) and is_integer(user_id), do:

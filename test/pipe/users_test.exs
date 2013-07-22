@@ -13,6 +13,14 @@ defmodule UsersTest do
     stop client
   end
 
+  fact "subscribe" do
+    :gen_server.call(:users, {:subscribe, 8841}) |> equals true
+
+    :gen_server.cast(:users, {:notify, 8841, "test"}) |> equals :ok
+
+    :gen_server.call(:users, {:unsubscribe, 8841}) |> equals true
+  end
+
   fact "online methods should work" do
     # set state to redis
     :gen_server.call(:users, {:online, 8841, true}) |> contains "OK"
