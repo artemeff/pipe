@@ -41,6 +41,7 @@
           $('#status_' + name).text('offline');
         };
         bullet.onmessage = function(e){
+          console.log(e.data);
           if (e.data != 'pong'){
             $('#time_' + name).text(e.data);
           }
@@ -67,13 +68,10 @@
       });
     };
 
-    start('best', {});
-    start('websocket', {'disableEventSource': true,
-      'disableXHRPolling': true});
-    start('eventsource', {'disableWebSocket': true,
-      'disableXHRPolling': true});
-    start('polling', {'disableWebSocket': true,
-      'disableEventSource': true});
+    start('best', {'disableEventSource': true});
+    //start('websocket', {'disableEventSource': true, 'disableXHRPolling': true});
+    //start('eventsource', {'disableWebSocket': true, 'disableXHRPolling': true});
+    //start('polling', {'disableWebSocket': true, 'disableEventSource': true});
   });
   // ]]>
   </script>
