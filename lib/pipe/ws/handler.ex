@@ -44,17 +44,19 @@ defmodule Pipe.Ws.Handler do
         { :shutdown, request, :unathorized }
 
     end
+
+    #{ :ok, request, state }
+    #{ :shutdown, request, :ok } 
   end
 
-  ##
-  # Receive -> send message, it method touch by user data,
-  # eg when anybody sends message to our ws/polling server
-  # it method runs
-  #
-  # :ok    - just say to client that request is delivered
-  # :reply - request is delivered and send message with response
-  ##
-
+  @doc """
+  Receive -> send message, it method touch by user data,
+  eg when anybody sends message to our ws/polling server
+  it method runs
+  
+  :ok    - just say to client that request is delivered
+  :reply - request is delivered and send message with response
+  """
   def stream(_data, request, state) do
     # send `wha?` message
     :gproc.send({ :p, :l, state.id }, "sess: #{state.session}")
@@ -63,14 +65,13 @@ defmodule Pipe.Ws.Handler do
     { :reply, "notify", request, state }
   end
 
-  ##
-  # Send message by server, it method should touch by server
-  # and its send any data to client
-  #
-  # :ok    - just say to client that request is delivered
-  # :reply - request is delivered and sand message with response
-  ##
-
+  @doc """
+  Send message by server, it method should touch by server
+  and its send any data to client
+  
+  :ok    - just say to client that request is delivered
+  :reply - request is delivered and sand message with response
+  """
   def info(message, request, state) do 
     #IO.write " -- [ws]   info re: '#{message}'"
 
@@ -78,17 +79,12 @@ defmodule Pipe.Ws.Handler do
     { :reply, "message: #{message}", request, state }
   end
 
-  ##
-  # Shutdown connect
-  #
-  # :ok
-  ##
-
-  def terminate(_request, _state) do
-    #IO.write " -- [ws]   terminate with state: "
-    #IO.inspect state
-
+  @doc """
+  Shutdown connect
+  
+  :ok
+  """
+  def terminate(_request, _state), do:
     :ok
-  end
 
 end
