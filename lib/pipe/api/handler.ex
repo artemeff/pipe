@@ -4,8 +4,8 @@ defmodule Pipe.Api.Handler do
     { :ok, req, :undefined }
 
   def handle(req, state) do
-    { :ok, req2} = :cowboy_req.reply(200, [], "Hello world!", req)
-    { :ok, req2, state}
+    { :ok, new_request } = :cowboy_req.reply(200, [], "Hello world!", req)
+    { :ok, new_request, state}
   end
 
   def terminate(_reason, _req, _state), do:
