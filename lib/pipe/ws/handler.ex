@@ -55,7 +55,7 @@ defmodule Pipe.Ws.Handler do
   # :reply - request is delivered and send message with response
   ##
 
-  def stream(data, request, state) do
+  def stream(_data, request, state) do
     # send `wha?` message
     :gproc.send({ :p, :l, state.id }, "sess: #{state.session}")
 

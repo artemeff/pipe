@@ -4,8 +4,8 @@ defmodule Pipe.Ws.Main do
     { :ok, req, :undefined }
 
   def handle(req, state) do
-    { :ok, req2} = :cowboy_req.reply(200, [], body, req)
-    { :ok, req2, state}
+    { :ok, new_req } = :cowboy_req.reply(200, [], body, req)
+    { :ok, new_req , state}
   end
 
   def terminate(_reason, _req, _state), do:
