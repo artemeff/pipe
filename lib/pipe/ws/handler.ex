@@ -3,7 +3,7 @@ defmodule Pipe.Ws.Handler do
   
   State is:
 
-    `[:active, :user_session, :user_id]`
+    `[:active, :session, :id]`
 
   Where `:active` is
 
@@ -12,17 +12,17 @@ defmodule Pipe.Ws.Handler do
 
   """
 
-  ##
-  # Connect to ws server
-  #
-  # :ok       - all fine, just work
-  # :shutdown - close connection in websockets and
-  #   try to reconnect in polling
-  ##
+  defrecord State, active: nil, session: nil, id: nil
 
+  @doc """
+  Connect to ws server
+  
+  :ok       - all fine, just work
+  :shutdown - close connection in websockets and try to reconnect in polling
+  """
   def init(_transport, request, _options, active) do
     # define state
-    state = { active, nil, nil }
+    state = State.new(active: active)
 
     # get token
     { token, _ } = :cowboy_req.cookie("_token", request)
@@ -31,23 +31,19 @@ defmodule Pipe.Ws.Handler do
     case :gen_server.call(:users, { :session, token }) do
       user_id when is_integer(user_id) ->
         # set new state
-        new_state = state |> set_elem(1, token) |> set_elem(2, user_id)
+        new_state = state.update(session: token, id: user_id)
 
         # subscribe user
         :gproc.reg({ :p, :l, user_id })
 
         # send ok new_state
-        # { :ok, request, new_state }
+        { :ok, request, new_state }
 
       false ->
         # falsy
-        # { :shutdown, request, :unathorized }
-        false
+        { :shutdown, request, :unathorized }
 
     end
-
-    { :ok, request, state }
-    #{ :shutdown, request, :ok }
   end
 
   ##
@@ -56,17 +52,15 @@ defmodule Pipe.Ws.Handler do
   # it method runs
   #
   # :ok    - just say to client that request is delivered
-  # :reply - request is delivered and sand message with response
+  # :reply - request is delivered and send message with response
   ##
 
   def stream(data, request, state) do
-    # get data from state
-    { active, user_session, user_id } = state
-
-    :gproc.send({ :p, :l, user_id }, "sess: #{user_session}")
+    # send `wha?` message
+    :gproc.send({ :p, :l, state.id }, "sess: #{state.session}")
 
     #{ :ok, request, state }
-    { :reply, "notify: #{rand}", request, state }
+    { :reply, "notify", request, state }
   end
 
   ##
