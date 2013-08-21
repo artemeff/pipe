@@ -19,6 +19,7 @@ defmodule Pipe.Ws.Handler do
   
   :ok       - all fine, just work
   :shutdown - close connection in websockets and try to reconnect in polling
+              its doesnt work and I dont know why ;(
   """
   def init(_transport, request, _options, active) do
     # define state
@@ -40,8 +41,8 @@ defmodule Pipe.Ws.Handler do
         { :ok, request, new_state }
 
       false ->
-        # falsy
-        { :shutdown, request, :unathorized }
+        # falsy, not authorized
+        { :ok, request, state }
 
     end
 
@@ -52,12 +53,11 @@ defmodule Pipe.Ws.Handler do
   @doc """
   Receive -> send message, it method touch by user data,
   eg when anybody sends message to our ws/polling server
-  it method runs
   
   :ok    - just say to client that request is delivered
   :reply - request is delivered and send message with response
   """
-  def stream(_data, request, state) do
+  def stream(_data, request, State[id: id] = state) when is_integer(id) do
     # send `wha?` message
     :gproc.send({ :p, :l, state.id }, "sess: #{state.session}")
 
@@ -65,19 +65,27 @@ defmodule Pipe.Ws.Handler do
     { :reply, "notify", request, state }
   end
 
+  # for guests
+  def stream(_data, request, state), do:
+    { :ok, request, state }
+
   @doc """
-  Send message by server, it method should touch by server
-  and its send any data to client
+  Send message by server, method should touch by server
+  and send any data to client
   
   :ok    - just say to client that request is delivered
-  :reply - request is delivered and sand message with response
+  :reply - request is delivered and sуnd message with response
   """
-  def info(message, request, state) do 
+  def info(message, request, State[id: id] = state) when is_integer(id) do 
     #IO.write " -- [ws]   info re: '#{message}'"
 
     #{ :ok, request, state }
     { :reply, "message: #{message}", request, state }
   end
+
+  # for guests
+  def info(_message, request, state), do:
+    { :ok, request, state }
 
   @doc """
   Shutdown connect
