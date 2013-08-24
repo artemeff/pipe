@@ -2,6 +2,7 @@
   "bullet": {:git, "git://github.com/extend/bullet.git", "458884c543a99f7c09438fd5989bec0802b42976", [{:ref, "45888"}]},
   "cowboy": {:git, "git://github.com/extend/cowboy.git", "46b2ea0aaa7fe891bfdf3f8a0c47357393e72cf6", [{:tag, "0.8.4"}]},
   "eredis": {:git, "git://github.com/wooga/eredis.git", "313fce73b0fdb53f3a5f146a7adf19677b417cb5", [{:tag, "v1.0.6"}]},
+  "erlzmq": {:git, "git://github.com/zeromq/erlzmq2.git", "be8119254d13500bd01ca2d90637888187299393", [{:ref, "be811"}]},
   "exredis": {:git, "git://github.com/artemeff/exredis.git", "1a75d11a5b971c26acec68f99905efb263f7ce28", [{:tag, "v0.0.4"}]},
   "gproc": {:git, "git://github.com/uwiger/gproc.git", "9cc44eeb5cfeeb381b452960b0447203f0bfcb1a", [{:tag, "0.2.17"}]},
   "json": {:git, "git://github.com/artemeff/json.git", "29171312bfc52f133a7d71f8ea0033a3b4c6de93", [{:branch, "upgrade-version"}]},
