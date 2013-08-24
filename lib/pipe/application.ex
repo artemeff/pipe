@@ -8,14 +8,6 @@ defmodule Pipe.Application do
   def start(_type, _args) do
     # cowboy router
     dispatch = :cowboy_router.compile [
-      # API for other apps
-      # visible only local
-      {"localhost", [
-        {'/', Pipe.Api.Handler, []},
-      ]},
-
-      # WS handler and client.js, for users
-      # visible for global
       {:_, [
         {'/', Pipe.Ws.Main, []},
         {'/ws', :bullet_handler, [{:handler, Pipe.Ws.Handler}]},
