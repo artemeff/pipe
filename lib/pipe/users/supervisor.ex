@@ -7,7 +7,7 @@ defmodule Pipe.Users.Supervisor do
 
   # The callback invoked when the supervisor starts
   def init(_args) do
-    process = [ worker(Pipe.Users.Server, [Exredis.start]) ]
+    process = [ worker(Pipe.Users.Server, []) ]
 
     supervise process, strategy: :one_for_one
   end

@@ -6,8 +6,8 @@ defmodule Pipe.Users.Server do
   # OTP methods
   ##
 
-  def start_link(redis), do:
-    :gen_server.start_link({ :local, :users }, __MODULE__, redis, [])
+  def start_link(), do:
+    :gen_server.start_link({ :local, :users }, __MODULE__, start, [])
 
   def init(redis), do:
     { :ok, redis }
