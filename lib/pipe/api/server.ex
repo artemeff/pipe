@@ -33,7 +33,7 @@ defmodule Pipe.Api.Server do
         # message received here
         handle(:ok, state)
 
-      { :error, type } ->
+      { :error, _type } ->
         # try to reconnect
         connect(:context, State.new(addr: state.addr))
 
