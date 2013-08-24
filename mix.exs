@@ -19,7 +19,7 @@ defmodule Pipe.Mixfile do
   # Returns the list of dependencies
   defp deps(:prod) do
     [
-      { :exredis, "0.0.2",  [ github: "artemeff/exredis", tag: "v0.0.2" ] },
+      { :exredis, "0.0.4",  [ github: "artemeff/exredis", tag: "v0.0.4" ] },
       { :json,    "0.0.1",  [ github: "artemeff/json", branch: "upgrade-version" ] },
       { :bullet,  "0.4.1",  [ github: "extend/bullet", ref: "45888" ] },
       { :gproc,   "0.2.17", [ github: "uwiger/gproc", tag: "0.2.17" ] }
@@ -29,7 +29,7 @@ defmodule Pipe.Mixfile do
   defp deps(_) do
     deps(:prod) ++
       [
-        { :amrita,  "0.1.4", [ github: "josephwilk/amrita", tag: "0.1.4" ]}
+        { :amrita,  "0.2.2", [ github: "josephwilk/amrita", tag: "v0.2.2" ]}
       ]
   end
 end
