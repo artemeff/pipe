@@ -26,6 +26,7 @@ defmodule Pipe.Application do
       [{:env, [{:dispatch, dispatch}]}]
 
     # start other applications
+    Pipe.Api.Supervisor.start_link("tcp://127.0.0.1:1234")
     Pipe.Hub.Supervisor.start_link
     Pipe.Users.Supervisor.start_link
   end
