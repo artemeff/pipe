@@ -78,8 +78,6 @@ defmodule Pipe.Api.Server do
   end
 
   defp connect(:bind, state) do
-    IO.puts "bind"
-    IO.inspect state
     case :erlzmq.bind(state.socket, state.addr) do
       :ok ->
         { :ok, state }
