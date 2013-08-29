@@ -13,7 +13,11 @@ defmodule Pipe.Api.Server do
   def init(state) do
     case connect(:context, state) do
       { :ok, new_state } ->
-        handle(:ok, new_state)
+        # spawn looper
+        spawn(__MODULE__, :handle, [:ok, new_state])
+
+        # return state
+        { :ok, new_state }
 
       { :error, new_state } ->
         { :terminate, new_state }
