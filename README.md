@@ -53,17 +53,7 @@ By default it attaching to `http://0.0.0.0:8080` and anyone allow to get this pa
 
 __Internal API__
 
-`http://127.0.0.1:8080`
+`tcp://127.0.0.1:1234`
 
-By default API server attaching to `http://127.0.0.1:8080` and only local machines can use it.
+ZeroMQ listens on tcp://127.0.0.1:1234, API doesn't implement at now.
 
-```http
-GET /
-
-  Hello World!
-
-GET /version
-
-  0.1-beta
-
-```
