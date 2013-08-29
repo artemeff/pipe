@@ -71,6 +71,7 @@ defmodule Pipe.Api.Server do
 
       any ->
         { :error, state.update(error: { :api_context, any }) }
+
     end
   end
 
@@ -84,6 +85,7 @@ defmodule Pipe.Api.Server do
 
       any ->
         { :error, state.update(error: { :api_socket, any }) }
+
     end
   end
 
@@ -97,6 +99,7 @@ defmodule Pipe.Api.Server do
 
       any ->
         { :error, state.update(error: { :api_bind, any }) }
+
     end
   end
 
