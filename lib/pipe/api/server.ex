@@ -36,7 +36,7 @@ defmodule Pipe.Api.Server do
       { :ok, message } ->
         # change it!
         user_id = -1
-        
+
         # serve
         :gen_server.call(:users, { :notify, user_id, message })
 
@@ -49,6 +49,7 @@ defmodule Pipe.Api.Server do
 
       any ->
         { :error, state.update(error: { :api_handle, any }) }
+        
     end
   end
 
