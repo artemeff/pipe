@@ -10,7 +10,7 @@ defmodule Pipe.Mixfile do
   # Configuration for the OTP application
   def application do
     [
-      applications: [:kernel, :stdlib, :cowboy, :gproc],
+      applications: [:kernel, :stdlib, :cowboy],
       registered: [],
       mod: { Pipe.Application, [] }
     ]
@@ -22,8 +22,7 @@ defmodule Pipe.Mixfile do
       { :exredis, "0.0.4",  [ github: "artemeff/exredis", tag: "v0.0.4" ] },
       { :json,    "0.0.1",  [ github: "artemeff/json", branch: "upgrade-version" ] },
       { :bullet,  "0.4.1",  [ github: "extend/bullet", ref: "45888" ] },
-      { :erlzmq,            [ github: "zeromq/erlzmq2", ref: "be811" ] },
-      { :gproc,   "0.2.17", [ github: "uwiger/gproc", tag: "0.2.17" ] }
+      { :erlzmq,            [ github: "zeromq/erlzmq2", ref: "be811" ] }
     ]
   end
 
