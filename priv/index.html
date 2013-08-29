@@ -47,8 +47,8 @@
           }
         };
         bullet.onheartbeat = function(){
-          console.log('ping: ' + name);
-          bullet.send('ping: ' + name);
+          //console.log('ping: ' + name);
+          bullet.send('online');
         };
       }
       open();
@@ -62,8 +62,7 @@
       });
       $('#send_' + name).on('click', function(){
         if (bullet) { 
-          bullet.send('time: ' + name + ' '
-            + $('#time_' + name).text());
+          bullet.send('register');
         }
       });
     };
