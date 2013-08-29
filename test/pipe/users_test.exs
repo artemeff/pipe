@@ -14,11 +14,15 @@ defmodule UsersTest do
   end
 
   fact "subscribe" do
-    :gen_server.call(:users, {:subscribe, 8841}) |> equals true
+    :gen_server.call(:users, {:subscribe, 8841, self}) |> equals "OK"
 
-    :gen_server.cast(:users, {:notify, 8841, "test"}) |> equals :ok
+    :gen_server.call(:users, {:notify, 8841, "test"}) |> equals "test"
 
-    :gen_server.call(:users, {:unsubscribe, 8841}) |> equals true
+    :gen_server.call(:users, {:unsubscribe, 8841}) |> equals "OK"
+
+    receive do
+      msg -> msg |> equals "test"
+    end
   end
 
   fact "online methods should work" do
@@ -77,23 +81,6 @@ defmodule UsersTest do
 
     # stop
     redis |> stop
-  end
-
-  it "pid method should work" do
-    # set state to redis
-    :gen_server.call(:users, {:pid, 8841}) |> contains "start"
-
-    # check it in redis
-    redis = Exredis.start
-
-    # it should be "1"
-    redis |> query(["SET", "pids:8841", "<0.1.1>"]) |> contains "OK"
-
-    # it should be "0"
-    :gen_server.call(:users, {:pid, 8841}) |> pid_to_list |> equals '<0.1.1>'
-
-    # stop redis server
-    redis |> Exredis.stop
   end
 
 end
