@@ -34,7 +34,13 @@ defmodule Pipe.Api.Server do
   def handle(:ok, state) do
     case :erlzmq.recv(state.socket) do
       { :ok, message } ->
-        # message received here
+        # change it!
+        user_id = -1
+        
+        # serve
+        :gen_server.call(:users, { :notify, user_id, message })
+
+        # loop
         handle(:ok, state)
 
       { :error, _type } ->
