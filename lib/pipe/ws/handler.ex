@@ -31,21 +31,19 @@ defmodule Pipe.Ws.Handler do
     # auth user
     case :gen_server.call(:users, { :session, token }) do
       user_id when is_integer(user_id) ->
-        # set new state
-        new_state = state.update(session: token, id: user_id)
-
         # subscribe user
-        :gproc.reg({ :p, :l, user_id })
+        self <- "subscribe"
 
         # send ok new_state
-        { :ok, request, new_state }
+        { :ok, request, state.update(session: token, id: user_id) }
 
-      false ->
+      _ ->
+        self <- "subscribe"
         # falsy, not authorized
-        { :ok, request, state }
+        { :ok, request, state.update(session: token, id: -1) }
 
     end
-
+    
     #{ :ok, request, state }
     #{ :shutdown, request, :ok } 
   end
@@ -57,9 +55,18 @@ defmodule Pipe.Ws.Handler do
   :ok    - just say to client that request is delivered
   :reply - request is delivered and send message with response
   """
-  def stream(_data, request, State[id: id] = state) when is_integer(id) do
-    # send `wha?` message
-    :gproc.send({ :p, :l, state.id }, "sess: #{state.session}")
+  def stream("online", request, State[id: id] = state) when is_integer(id) do
+    # redis user online trigger
+
+    IO.puts " -- [ws] #stream online"
+
+    { :ok, request, state }
+  end
+
+  def stream(data, request, State[id: id] = state) when is_integer(id) do
+    IO.puts " -- [ws] #stream .any."
+    IO.inspect data
+    IO.inspect self
 
     #{ :ok, request, state }
     { :reply, "notify", request, state }
@@ -76,8 +83,15 @@ defmodule Pipe.Ws.Handler do
   :ok    - just say to client that request is delivered
   :reply - request is delivered and sуnd message with response
   """
-  def info(message, request, State[id: id] = state) when is_integer(id) do 
-    #IO.write " -- [ws]   info re: '#{message}'"
+  def info("subscribe", request, State[id: id] = state) when is_integer(id) do
+    :gen_server.call(:users, { :subscribe, id, self })
+
+    { :reply, "subscribed", request, state }
+  end
+
+  def info(message, request, State[id: id] = state) when is_integer(id) do
+    IO.puts " -- [ws] #info"
+    IO.inspect message
 
     #{ :ok, request, state }
     { :reply, "message: #{message}", request, state }
