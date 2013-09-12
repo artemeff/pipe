@@ -1,4 +1,4 @@
-### pipe mq for th 
+### pipe mq; unfinished application for client; just for inspect, not for use
 
 ---
 
